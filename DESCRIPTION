@@ -1,0 +1,40 @@
+Package: ospsuite.qualificationplaneditor
+Type: Package
+Title: Convert Qualification Plan From/To Excel
+Version: 0.1.0
+Authors@R: 
+    c(person(given = "Open-Systems-Pharmacology Community",
+             role = "cph"),
+      person(given = "Juri",
+             family = "Solodenko",
+             role = "aut",
+             email = "juri.solodenko@bayer.com",
+             comment = c(ORCID = "0000-0001-6922-588X")),
+      person(given = "Pierre",
+             family = "Chelle",
+             role = c("aut", "cre"),
+             email = "chelle.pierre@gmail.com",
+             comment = c(ORCID = "0000-0002-0167-4774"))
+      )
+Description: Convert your qualification plan to Excel for easy editing, then convert back as a qualification plan.
+License: GPL-2 | file LICENSE
+URL: https://github.com/open-systems-pharmacology/ospsuite.qualificationplaneditor
+BugReports: 
+    https://github.com/open-systems-pharmacology/ospsuite.qualificationplaneditor/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Imports: 
+    cli,
+    jsonlite,
+    openxlsx,
+    ospsuite.utils (>= 1.7.0.9000)
+Remotes: 
+    Open-Systems-Pharmacology/OSPSuite-R
+Suggests: 
+    knitr,
+    readxl,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr

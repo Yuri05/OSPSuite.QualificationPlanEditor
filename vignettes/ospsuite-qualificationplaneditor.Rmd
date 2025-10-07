@@ -1,0 +1,64 @@
+---
+title: "Get Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Get Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# library(ospsuite.qualificationplaneditor)
+```
+
+
+The OSPSuite.QualificationPlanEditor package is designed to help you convert qualification plans from/into Excel format for easier editing.
+
+The package provides functionality to parse project snapshots, extract simulation data, and generate Excel workbooks with structured data sheets that can be edited and converted back to qualification plans.
+
+## Example
+
+Here is a basic example showing how to include an updated project snapshot in your qualification plan:
+
+``` r
+## Load the ospsuite.qualificationplaneditor package
+library(ospsuite.qualificationplaneditor)
+ospPath <- "https://raw.githubusercontent.com/Open-Systems-Pharmacology"
+excelQualification <- "Updated-Qualification.xlsx"
+
+# List your updated snapshot projects
+snapshotPaths <- list(
+  "Compound A" = file.path(ospPath, "A-Model/vX.X/A-Model.json"),
+  "Compound B" = file.path(ospPath, "B-Model/vX.X/B-Model.json"),
+  "A-B-DDI" = file.path(ospPath, "A-B-DDI/vX.X/A-B-DDI.json")
+)
+
+# List your updated observed datasets
+observedDataPaths <- list("DDI Ratios" = list(
+    Path = file.path(ospPath, "Database-for-observed-data/vX.X/DDI.csv"),
+    Type = "DDIRatio"
+    ))
+
+# Initial qualification plan
+qualificationPlan <- file.path(ospPath, "A-Model/vY.Y/Qualification/qualification_plan.json")
+
+# qualification plan converted to Excel
+excelUI(
+  fileName = excelQualification,
+  snapshotPaths = snapshotPaths, 
+  observedDataPaths = observedDataPaths,
+  qualificationPlan = qualificationPlan
+)
+
+# Tip: this will open Excel (or Libre office) with the created Excel workbook
+utils::browseURL(excelQualification)
+
+```
+
