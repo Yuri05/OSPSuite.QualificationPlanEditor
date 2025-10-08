@@ -8,6 +8,11 @@
 #' @return data.frame with columns `ID` and `Path`
 #' @export
 getProjectsFromQualification <- function(qualificationContent) {
+  # Guard for empty/NULL inputs
+  if (ospsuite.utils::isEmpty(qualificationContent$Projects)) {
+    return(data.frame(ID = character(), Path = character(), stringsAsFactors = FALSE))
+  }
+  
   projectData <- lapply(
     qualificationContent$Projects,
     function(projectContent) {
@@ -29,6 +34,11 @@ getProjectsFromQualification <- function(qualificationContent) {
 #' @return data.frame with columns `ID`, `Path` and `Type`
 #' @export
 getObsDataFromQualification <- function(qualificationContent) {
+  # Guard for empty/NULL inputs
+  if (ospsuite.utils::isEmpty(qualificationContent$ObservedDataSets)) {
+    return(data.frame(ID = character(), Path = character(), Type = character(), stringsAsFactors = FALSE))
+  }
+  
   obsData <- lapply(
     qualificationContent$ObservedDataSets,
     function(obsDataContent) {
@@ -51,11 +61,23 @@ getObsDataFromQualification <- function(qualificationContent) {
 #' @return A data.frame with columns `Project`, `Simulation` and `Output`
 #' @export
 getBBDataFromQualification <- function(qualificationContent) {
+  # Guard for empty/NULL inputs
+  if (ospsuite.utils::isEmpty(qualificationContent$Projects)) {
+    return(data.frame(
+      "Project" = character(),
+      "BB-Type" = character(),
+      "BB-Name" = character(),
+      "Parent-Project" = character(),
+      check.names = FALSE,
+      stringsAsFactors = FALSE
+    ))
+  }
+  
   bbData <- lapply(
     qualificationContent$Projects,
     function(projectContent) {
-      if (is.null(projectContent$BuildingBlocks)) {
-        return()
+      if (ospsuite.utils::isEmpty(projectContent$BuildingBlocks)) {
+        return(NULL)
       }
       projectBB <- do.call(rbind.data.frame, projectContent$BuildingBlocks)
       data.frame(
@@ -68,6 +90,22 @@ getBBDataFromQualification <- function(qualificationContent) {
       )
     }
   )
+  
+  # Filter out NULL values before rbind
+  bbData <- bbData[!sapply(bbData, is.null)]
+  
+  # If all projects had NULL BuildingBlocks, return empty data.frame
+  if (ospsuite.utils::isEmpty(bbData)) {
+    return(data.frame(
+      "Project" = character(),
+      "BB-Type" = character(),
+      "BB-Name" = character(),
+      "Parent-Project" = character(),
+      check.names = FALSE,
+      stringsAsFactors = FALSE
+    ))
+  }
+  
   bbData <- do.call(rbind, bbData)
   return(bbData)
 }
